@@ -197,6 +197,7 @@ export const initialState = {
     "declarative_source": "google",
     "is_revenue_simulator": false,
     "siren": "",
+    "nova_status": "",
   };
 
 export const postAccount = async (body: typeof initialState) => {

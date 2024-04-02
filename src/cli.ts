@@ -12,7 +12,8 @@ import {
     getUniqueSiren,
 } from './utils';
 
-const UNIVERSES = ['cleaning', 'beauty', 'massage', 'haircut', 'childcare', 'sports_coaching']
+const UNIVERSES = ['cleaning', 'beauty', 'massage', 'haircut', 'childcare', 'sports_coaching'];
+const COMPANY_STATUS = ['no_company', 'auto_entrepreneur', 'other_entity']
 const askUniverse = async () => {
     return select({
         message: 'Choose your universe',
@@ -20,6 +21,16 @@ const askUniverse = async () => {
             name: universe,
             value: universe
         }))
+    });
+}
+
+const askCompanyStatus = async () => {
+    return select({
+        message: '',
+        choices: COMPANY_STATUS.map((status) => ({
+            name: status,
+            value: status,
+        })),
     });
 }
 
@@ -52,6 +63,10 @@ const askCustomInputs = async () => {
             {
                 name: 'universe',
                 value: 'universe',
+            },
+            {
+                name: 'company_status',
+                value: 'company_status',
             },
             {
                 name: 'email',
@@ -112,6 +127,11 @@ const main = async () => {
     const inputs = await askCustomInputs();
 
     if (inputs.some((input) => input === 'none')) return generateAccount(body);
+    if (inputs.some((input) => input === 'company_status')) {
+        const status = await askCompanyStatus();
+        body.company_status = status;
+        if (status !== 'no_company') body.nova_status = 'yes';
+    };
     if (inputs.some((input) => input === 'email')) {
         body.email = await generateEmail(); 
     }
