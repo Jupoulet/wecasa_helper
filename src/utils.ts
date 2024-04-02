@@ -138,38 +138,6 @@ export const getUniqueEmail = async () => {
     return uniqueEmail;
 }
 
-export const railsInitialState = {
-    "pro_subscription": {
-      "universe": "beauty",
-      "salutation": "M.",
-      "first_name": "Julien",
-      "last_name": "Picard",
-      "date_of_birth": "10/01/1993",
-      // "siren": "415245345",
-      "email": "beautytest@gmail.com",
-      "address": "12 Rue Des Marguettes, 75012, Paris",
-      "street_number": "12",
-      "street_name": "Rue Des Marguettes",
-      "zip_code": "75012",
-      "city": "Paris",
-      "lat": "48.842989",
-      "lng": "2.408055",
-      "country_code": "FR",
-      "phone": "+33 6 89 87 87 89",
-      "pro_subscription": {
-        "phone": "+33689878789"
-      },
-      "password": "123456",
-      "company_status": "no_company",
-      "declarative_source": "facebook",
-      "cgu_accepted": true,
-      "variant": "a",
-      "internet_promotion_authorisation": [0, 1]
-    },
-  }
-  
-
-
 export const initialState = {
     "is_multistep": true,
     "device_source": "web",

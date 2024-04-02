@@ -8,7 +8,6 @@ import {
     initialState,
     postAccount,
     getUniquePhoneNumber,
-    railsInitialState,
     getUniqueSiren,
 } from './utils';
 
@@ -137,7 +136,6 @@ const main = async () => {
     }
     if (inputs.some((input) => input === 'universe')) {
         const universe = await askUniverse();
-        console.log('❌ Other universe than cleaning is not supported yet')
         body.universe = universe;
         body.siren = await getUniqueSiren();
     }
