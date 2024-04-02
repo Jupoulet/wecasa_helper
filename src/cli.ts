@@ -9,6 +9,7 @@ import {
     postAccount,
     getUniquePhoneNumber,
     railsInitialState,
+    getUniqueSiren,
 } from './utils';
 
 const UNIVERSES = ['cleaning', 'beauty', 'massage', 'haircut', 'childcare', 'sports_coaching']
@@ -85,7 +86,7 @@ const generateEmail = async () => {
 }
 
 const generateAccount = async (body: typeof initialState) => {
-    console.log('Creatin account...')
+    console.log('Creatin account...', body)
     const result = await postAccount(body);
     if (result.ok) {
         clipboard.writeSync(body.email);
@@ -95,7 +96,7 @@ const generateAccount = async (body: typeof initialState) => {
         console.log('🔑 Your password is 123456');
         return;
     }
-    console.log('❌ Something went wrong', result);
+    console.log('❌ Something went wrong', await result.json());
 }
 
 const main = async () => {
@@ -117,10 +118,9 @@ const main = async () => {
     if (inputs.some((input) => input === 'universe')) {
         const universe = await askUniverse();
         console.log('❌ Other universe than cleaning is not supported yet')
-        return 
-        body.universe = universe; 
+        body.universe = universe;
+        body.siren = await getUniqueSiren();
     }
-
     generateAccount(body);
 };
 

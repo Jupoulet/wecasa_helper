@@ -24,6 +24,31 @@ function generateRandomEmail() {
     const digit = Math.floor(Math.random() * 10);
     return digit.toString();
   }
+
+  function generateRandomSIREN() {
+    // Generate 8 random digits
+    let sirenWithoutControlDigit = '';
+    for (let i = 0; i < 8; i++) {
+      sirenWithoutControlDigit += Math.floor(Math.random() * 10);
+    }
+  
+    // Calculate the control digit
+    let sum = 0;
+    for (let i = 0; i < 8; i++) {
+      let digit = parseInt(sirenWithoutControlDigit[i]);
+      if (i % 2 === 0) {
+        digit *= 2;
+        if (digit > 9) {
+          digit -= 9;
+        }
+      }
+      sum += digit;
+    }
+    let controlDigit = (10 - (sum % 10)) % 10;
+  
+    // Concatenate all digits to form the SIREN number
+    return sirenWithoutControlDigit + controlDigit;
+  }
   
   function generateFrenchPhoneNumber() {
     const countryCode = Math.random() < 0.5 ? '+33 6 ' : '+33 7 ';
@@ -47,6 +72,20 @@ type ValidateUniqueBody = {
     email?: string;
     phone?: string;
   }
+
+  export const postValidateSiren = async (siren) => {
+    return fetch('https://staging.wecasa.fr/api/v1/pro/account/validate_siren', {
+        method: 'POST',
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "*/*",
+        },
+        body: JSON.stringify({ siren })
+      });
+  }
   
   export const postValidateUnique = async ({ email, phone }: ValidateUniqueBody) => {
     return fetch('https://staging.wecasa.fr/api/v1/pro/account/validate_unique', {
@@ -61,6 +100,18 @@ type ValidateUniqueBody = {
         body: JSON.stringify({ email, phone })
       });
   }
+
+export const getUniqueSiren = async () => {
+  let uniqueSiren;
+  while (!uniqueSiren) {
+    const siren = generateRandomSIREN();
+    const result = await postValidateSiren(siren)
+    if (result.status === 200) {
+      uniqueSiren = siren;
+    }
+  }
+  return uniqueSiren;
+}
 
 export const getUniquePhoneNumber = async () => {
     let uniqueNumber;
@@ -88,15 +139,13 @@ export const getUniqueEmail = async () => {
 }
 
 export const railsInitialState = {
-    "authenticity_token": "b0mdyHpfoX4Vniy0L3xEMsWN5-fDSZLeVqkF6hIP7jEZkfEGdEnQFr2OURWUQL_ZLdY5tiMQQPQXf2wtZLXHGA",
-    "universe": "beauty",
     "pro_subscription": {
-      "universes": ["beauty"],
+      "universe": "beauty",
       "salutation": "M.",
       "first_name": "Julien",
       "last_name": "Picard",
       "date_of_birth": "10/01/1993",
-      "siren": "415245345",
+      // "siren": "415245345",
       "email": "beautytest@gmail.com",
       "address": "12 Rue Des Marguettes, 75012, Paris",
       "street_number": "12",
@@ -146,7 +195,8 @@ export const initialState = {
     "also_a_nanny": false,
     "internet_promotion_authorisation": true,
     "declarative_source": "google",
-    "is_revenue_simulator": false
+    "is_revenue_simulator": false,
+    "siren": "",
   };
 
 export const postAccount = async (body: typeof initialState) => {
