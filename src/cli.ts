@@ -73,6 +73,7 @@ const generateEmail = async () => {
             console.log('❌ Email is already taken')
         }
         const prompt = await askForEmail();
+        counter++;
         const result = await postValidateUnique({ email: prompt })
         if (result.status === 200) {
             console.log('✅ Email validated')
