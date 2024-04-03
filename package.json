@@ -8,6 +8,7 @@
     "hono": "^4.1.0"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.4",
     "@types/bun": "latest"
   }
 }
