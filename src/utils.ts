@@ -1,3 +1,6 @@
+export const UNIVERSES = ['cleaning', 'beauty', 'massage', 'haircut', 'childcare', 'sports_coaching'];
+export const COMPANY_STATUS = ['no_company', 'auto_entrepreneur', 'other_entity']
+
 function generateRandomEmail() {
     const usernameLength = 6;
     let username = '';

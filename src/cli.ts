@@ -9,10 +9,10 @@ import {
     postAccount,
     getUniquePhoneNumber,
     getUniqueSiren,
+    UNIVERSES,
+    COMPANY_STATUS,
 } from './utils';
 
-const UNIVERSES = ['cleaning', 'beauty', 'massage', 'haircut', 'childcare', 'sports_coaching'];
-const COMPANY_STATUS = ['no_company', 'auto_entrepreneur', 'other_entity']
 const askUniverse = async () => {
     return select({
         message: 'Choose your universe',
