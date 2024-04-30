@@ -5,7 +5,7 @@ import select from '@inquirer/select';
 import {
     getUniqueEmail,
     postValidateUnique,
-    initialState,
+    initialStateFR,
     postAccount,
     getUniquePhoneNumber,
     getUniqueSiren,
@@ -99,7 +99,7 @@ const generateEmail = async () => {
 
 }
 
-const generateAccount = async (body: typeof initialState) => {
+const generateAccount = async (body: typeof initialStateFR) => {
     console.log('Creatin account...', body)
     const result = await postAccount(body);
     if (result.ok) {
@@ -116,7 +116,7 @@ const generateAccount = async (body: typeof initialState) => {
 const main = async () => {
     const email = await getUniqueEmail();
     const mobile = await getUniquePhoneNumber();
-    let body = { ...initialState, email, mobile };
+    let body = { ...initialStateFR, email, mobile };
     console.log('Hi 👋 I will help you create your pro account')
     const isCustom = await askIsCustom();
     if (!isCustom) {

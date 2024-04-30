@@ -1,5 +1,28 @@
 export const UNIVERSES = ['cleaning', 'beauty', 'massage', 'haircut', 'childcare', 'sports_coaching'];
 export const COMPANY_STATUS = ['no_company', 'auto_entrepreneur', 'other_entity']
+export const WILL_WORK_AS_SELF_EMPLOYED = ['yes', 'no', 'dont_know'];
+export const GB_RESIDENCE_STATUS = [
+  'asylum-seeker',
+  'british',
+  'dependent_spouse-visa',
+  'pre-settled_limited',
+  'refugee',
+  'settled_indefinite',
+  'sponsored-visa',
+  'student',
+];
+
+export type GbResidenceStatus =
+  | 'asylum-seeker'
+  | 'british'
+  | 'dependent_spouse-visa'
+  | 'pre-settled_limited'
+  | 'refugee'
+  | 'settled_indefinite'
+  | 'sponsored-visa'
+  | 'student';
+
+
 
 function generateRandomEmail() {
     const usernameLength = 6;
@@ -71,12 +94,25 @@ function generateRandomEmail() {
     return phoneNumber;
   }
 
+  function generateUKPhoneNumber() {
+    const countryCode = "+44";
+    const areaCode = "7400";
+    const secondBlock = Math.floor(Math.random() * 1000000); // Ensures a six-digit number
+
+    const phone = secondBlock.toString().padStart(6, '0');
+
+    // Format the phone number
+    const phoneNumber = `${countryCode} ${areaCode} ${phone}`;
+
+    return phoneNumber;
+}
+
 type ValidateUniqueBody = {
     email?: string;
     phone?: string;
   }
 
-  export const postValidateSiren = async (siren) => {
+  export const postValidateSiren = async (siren: string) => {
     return fetch('https://staging.wecasa.fr/api/v1/pro/account/validate_siren', {
         method: 'POST',
         mode: "cors", // no-cors, *cors, same-origin
@@ -116,11 +152,11 @@ export const getUniqueSiren = async () => {
   return uniqueSiren;
 }
 
-export const getUniquePhoneNumber = async () => {
+export const getUniquePhoneNumber = async (isUk = false) => {
     let uniqueNumber;
   
     while (!uniqueNumber) {
-      const phoneNumber = generateFrenchPhoneNumber();
+      const phoneNumber = isUk ? generateUKPhoneNumber() : generateFrenchPhoneNumber();
       const result = await postValidateUnique({ phone: phoneNumber })
       if (result.status === 200) {
         uniqueNumber = phoneNumber;
@@ -141,7 +177,34 @@ export const getUniqueEmail = async () => {
     return uniqueEmail;
 }
 
-export const initialState = {
+export const initialStateUK = {
+  "device_source": "web",
+  "is_multi_step": true,
+  "universe": "cleaning",
+  "mobile": "+44 7400 182716",
+  "country_code": "GB",
+  "salutation": "M.",
+  "first_name": "jean",
+  "last_name": "jean",
+  "email": "jean@gmail.com",
+  "password": "123456",
+  "address": "The King Of Flafel, 17 Hunter Street, London, WC1N 1BN",
+  "street_name": "Hunter Street",
+  "street_number": "17",
+  "city": "London",
+  "zip_code": "WC1N 1BN",
+  "lat": 51.5260819,
+  "lng": -0.1234869,
+  "date_of_birth": "10/01/1993",
+  "will_work_as_self_employed": "yes",
+  "gb_residence_status": "british",
+  "weekly_hours": "more_than_thirty",
+  "internet_promotion_authorisation": true,
+  "declarative_source": "google",
+  "is_revenue_simulator": true
+}
+
+export const initialStateFR = {
     "is_multistep": true,
     "device_source": "web",
     "universe": "cleaning",
@@ -171,7 +234,7 @@ export const initialState = {
     "nova_status": "",
   };
 
-export const postAccount = async (body: typeof initialState) => {
+export const postAccount = async (body: typeof initialStateFR | typeof initialStateUK) => {
     return fetch('https://staging.wecasa.fr/api/v1/pro/account', {
         method: 'POST',
         mode: "cors", // no-cors, *cors, same-origin

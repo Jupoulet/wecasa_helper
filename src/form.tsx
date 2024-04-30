@@ -1,5 +1,5 @@
 import type { FC } from 'hono/jsx';
-import { COMPANY_STATUS, UNIVERSES, initialState } from './utils';
+import { COMPANY_STATUS, GB_RESIDENCE_STATUS, UNIVERSES, WILL_WORK_AS_SELF_EMPLOYED, initialState, initialStateUK } from './utils';
 import { css, Style } from 'hono/css'
 import { Layout } from './layout';
 
@@ -77,12 +77,15 @@ const Input = ({ name, id, value, label, placeholder }: InputProps) => {
 }
 
 
-type FormProps = typeof initialState
+type FormProps = typeof initialState;
 
 export const Form: FC<FormProps> = ({ email, mobile, first_name, last_name, country_code, salutation, company_status, universe, ...rest }) => {
     return (
         <Layout>
             <h1 class="text-3xl font-bold tracking-tight text-gray-900 mb-8">Pro subscription</h1>
+            <button class="mb-8">
+                <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white" href="/uk">🇬🇧 UK form</a>
+            </button>
             <form action='/' method='post' class='flex flex-col gap-4'>
                 <div>
                     <span class="block text-sm font-medium leading-6 text-gray-900">Gender</span>
@@ -109,6 +112,52 @@ export const Form: FC<FormProps> = ({ email, mobile, first_name, last_name, coun
                     {COMPANY_STATUS.map((status) => (
                         <option key={status} value={status} selected={status === company_status}>{status}</option>
                     ))}
+                </Select>
+                <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-min">Valider</button>
+            </form>
+        </Layout>
+    )
+}
+
+type FormUKProps = typeof initialStateUK;
+export const FormUK: FC<FormUKProps> = ({ email, mobile, first_name, last_name, country_code, salutation, universe, will_work_as_self_employed, gb_residence_status, ...rest }) => {
+    return (
+        <Layout>
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900 mb-8">Pro subscription</h1>
+            <button class="mb-8">
+                <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white" href="/">🇫🇷 FR form</a>
+            </button>
+            <form action='/' method='post' class='flex flex-col gap-4'>
+                <div>
+                    <span class="block text-sm font-medium leading-6 text-gray-900">Gender</span>
+                    <Radio name='salutation' id='M.' value='M.' checked={salutation === 'M.'} label='Monsieur' />
+                    <Radio name='salutation' id='Mme' value='Mme' checked={salutation === 'Mme'} label='Madame' />
+                </div>
+                <Select name='universe' label='Universe' id='universe'>
+                    {UNIVERSES
+                        .filter((u) => u !== 'childcare')
+                        .map((u) => (
+                            <option selected={u === universe} key={u} value={u}>{u}</option>
+                        ))
+                    }
+                </Select>
+                <Input name='first_name' id='first_name' value={first_name} label='FirstName' />
+                <Input name='last_name' id='last_name' value={last_name} label='LastName' />
+                <Input name='email' id='email' value={email} label='Email' />
+                <Input name='mobile' id='mobile' value={mobile} label='Phone' />
+                <Select name='will_work_as_self_employed' label='Will work as self employed' id='will_work_as_self_employed'>
+                    {WILL_WORK_AS_SELF_EMPLOYED
+                        .map((w) => (
+                            <option selected={w === will_work_as_self_employed} key={w} value={w}>{w}</option>
+                        ))
+                    }
+                </Select>
+                <Select name='gb_residence_status' label='Residence status' id='gb_residence_status'>
+                    {GB_RESIDENCE_STATUS
+                        .map((status) => (
+                            <option selected={status === gb_residence_status} key={status} value={status}>{status}</option>
+                        ))
+                    }
                 </Select>
                 <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-min">Valider</button>
             </form>
