@@ -1,14 +1,15 @@
 import { Hono } from 'hono';
-import { Form, FormUK, FormDE } from './form';
-import { getUniqueEmail, getUniquePhoneNumber, getUniqueSiren, initialStateFR, postAccount, initialStateUK, initialStateDE } from './utils';
+import { Form, FormUK, FormDE, FormAT } from './form';
+import { getUniqueEmail, getUniquePhoneNumber, getUniqueSiren, initialStateFR, initialStateAT, postAccount, initialStateUK, initialStateDE } from './utils';
 
 const app = new Hono()
 
-export type Country = 'FR' | 'DE' | 'GB';
+export type Country = 'FR' | 'DE' | 'GB' | 'AT';
 const initialStateByCountry: Record<Country, any> = {
   FR: initialStateFR,
   GB: initialStateUK,
   DE: initialStateDE,
+  AT: initialStateAT,
 }
 
 app.get('/', async (c) => {
@@ -25,6 +26,12 @@ app.get('/', async (c) => {
   const country = (c.req.header().referer.split('/').reverse()[0].toUpperCase() || 'FR') as Country;
   const siren = bodyForm.company_status !== 'no_entity' ? await getUniqueSiren(country) : '';
   const initialState =  initialStateByCountry[country]
+  console.log('BODY', {
+    ...initialState,
+    ...bodyForm,
+    nova_status,
+    siren,
+  });
   const result = await postAccount({
     ...initialState,
     ...bodyForm,
@@ -52,6 +59,15 @@ app.get('/de', async (c) => {
 
   return c.html(
     <FormDE  {...initialStateDE} email={email} mobile={mobile} />
+  )
+})
+
+app.get('/at', async (c) => {
+  const email = await getUniqueEmail();
+  const mobile = await getUniquePhoneNumber('AT');
+
+  return c.html(
+    <FormAT  {...initialStateAT} email={email} mobile={mobile} />
   )
 })
 

@@ -3,7 +3,8 @@ import { Country } from '.';
 const emojiByCountry = {
   FR: '🇫🇷',
   DE: '🇩🇪',
-  GB: '🇬🇧'
+  GB: '🇬🇧',
+  AT: '🇦🇹'
 }
 export const Layout = (props: { children?: any, country: Country }) => {
   return (

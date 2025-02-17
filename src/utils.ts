@@ -61,7 +61,7 @@ function generateRandomEmail() {
         return generateRandomSIREN(13)
       case 'AT':
         return generateRandomSIREN(15)
-      case 'AT':
+      case 'CH':
          return `CHE-${generateRandomSIREN(9)}`
       default:
         return generateRandomSIREN(9)
@@ -123,6 +123,18 @@ function generateRandomEmail() {
     return `+49 ${phoneNumber}`;
 }
 
+function generateAustrianPhoneNumber() {
+  const countryCode = "+43"; // Austria country code
+  const providerCode = Math.random() < 0.5 ? "650" : "660"; // Common Austrian mobile prefixes
+  const firstBlock = Math.floor(Math.random() * 1000).toString().padStart(3, '0'); // Three-digit number
+  const secondBlock = Math.floor(Math.random() * 10000).toString().padStart(4, '0'); // Four-digit number
+
+  // Format the phone number
+  const phoneNumber = `${providerCode} ${firstBlock}${secondBlock}`;
+
+  return `${countryCode} ${phoneNumber}`;
+}
+
 const getPhoneNumber = (country = 'FR') => {
   switch (country) {
     case 'FR':
@@ -131,6 +143,8 @@ const getPhoneNumber = (country = 'FR') => {
       return generateUKPhoneNumber();
     case 'DE':
       return generateGermanPhoneNumber();
+    case 'AT':
+      return generateAustrianPhoneNumber();
     default:
       break;
   }
@@ -217,6 +231,34 @@ export const getUniqueEmail = async () => {
         }
     }
     return uniqueEmail;
+}
+
+export const initialStateAT = {
+  "preferred_language": "de-AT",
+  "device_source": "web-next",
+  "is_multi_step": true,
+  "universe": "cleaning",
+  "mobile": "+43 664 123456",
+  "country_code": "AT",
+  "salutation": "M.",
+  "first_name": "okokok",
+  "last_name": "okkodkodze",
+  "email": "at@gmail.com",
+  "password": "Azerty1!",
+  "address": "Große Sperlgasse 41, 1020 Wien, Österreich",
+  "street_name": "Große Sperlgasse",
+  "street_number": "41",
+  "city": "Wien",
+  "zip_code": "1020",
+  "lat": 48.21975,
+  "lng": 16.37845,
+  "date_of_birth": "10/01/1993",
+  "company_status": "e_startup",
+  "siren": "",
+  "residency_status": "national",
+  "weekly_hours": "twenty_to_thirty",
+  "declarative_source": "word_of_mouth",
+  "is_revenue_simulator": true
 }
 
 export const initialStateDE = {
