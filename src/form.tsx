@@ -288,7 +288,7 @@ export const FormAT: FC<FormPropsAT> = ({ email, mobile, first_name, last_name, 
 }
 
 type FormPropsCH = typeof initialStateCH;
-export const FormCH: FC<FormPropsCH> = ({ email, mobile, first_name, last_name, country_code, salutation, company_status, universe, ...rest }) => {
+export const FormCH: FC<FormPropsCH> = ({ preferred_language, email, mobile, first_name, last_name, country_code, salutation, company_status, universe, ...rest }) => {
     return (
         <Layout country='CH'>
             <h1 class="text-3xl font-bold tracking-tight text-gray-900 mb-8">Pro subscription</h1>
@@ -324,6 +324,10 @@ export const FormCH: FC<FormPropsCH> = ({ email, mobile, first_name, last_name, 
                 <Input name='last_name' id='last_name' value={last_name} label='LastName' />
                 <Input name='email' id='email' value={email} label='Email' />
                 <Input name='mobile' id='mobile' value={mobile} label='Phone' />
+                <Select name="preferred_language" id="preferred_language" value={preferred_language} label='Preferred language'>
+                    <option value='fr-CH' selected={preferred_language === 'fr-CH'}>🇫🇷 fr-CH</option>
+                    <option value='de-CH' selected={preferred_language === 'de-CH'}>🇩🇪 de-CH</option>
+                </Select>
                 <Select name='country_code' label='Country code' id='country_code'>
                     <option value='FR' selected={country_code === 'FR'}>FR</option>
                     <option value='GB' selected={country_code === 'GB'}>GB</option>
