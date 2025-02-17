@@ -1,5 +1,5 @@
 export const UNIVERSES = ['cleaning', 'beauty', 'massage', 'haircut', 'childcare', 'sports_coaching'];
-export const COMPANY_STATUS = ['no_company', 'auto_entrepreneur', 'other_entity']
+export const COMPANY_STATUS = ['no_company', 'auto_entrepreneur', 'other_entity', 'freiberufler', 'gewerbe', 'eingetragener_kaufmann_ek', 'raison_individuelle', 'societe_en_commandite', 'societe_en_nom_collectif', 'sarl', 'sa', 'e_startup', 'sole_proprietorship', 'partnership', 'corporation']
 export const WILL_WORK_AS_SELF_EMPLOYED = ['yes', 'no', 'dont_know'];
 export const GB_RESIDENCE_STATUS = [
   'asylum-seeker',
@@ -51,16 +51,33 @@ function generateRandomEmail() {
     return digit.toString();
   }
 
-  function generateRandomSIREN() {
-    // Generate 8 random digits
+  function generateRandomCompanyId(country = 'FR') {
+    switch (country) {
+      case 'FR':
+        return generateRandomSIREN(9)
+      case 'GB':
+        return generateRandomSIREN(10)
+      case 'DE':
+        return generateRandomSIREN(13)
+      case 'AT':
+        return generateRandomSIREN(15)
+      case 'AT':
+         return `CHE-${generateRandomSIREN(9)}`
+      default:
+        return generateRandomSIREN(9)
+    }
+  }
+
+  function generateRandomSIREN(length = 9) {
+    // Generate 9 random digits
     let sirenWithoutControlDigit = '';
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < (length - 1); i++) {
       sirenWithoutControlDigit += Math.floor(Math.random() * 10);
     }
   
     // Calculate the control digit
     let sum = 0;
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < (length - 1); i++) {
       let digit = parseInt(sirenWithoutControlDigit[i]);
       if (i % 2 === 0) {
         digit *= 2;
@@ -93,6 +110,31 @@ function generateRandomEmail() {
   
     return phoneNumber;
   }
+
+  function generateGermanPhoneNumber() {
+    const countryCode = "0151"; // Common German mobile prefix
+    const secondDigit = Math.floor(Math.random() * 10); // Random digit after 0151
+    const firstBlock = Math.floor(Math.random() * 1000).toString().padStart(3, '0'); // Three-digit number
+    const secondBlock = Math.floor(Math.random() * 10000).toString().padStart(4, '0'); // Four-digit number
+
+    // Format the phone number
+    const phoneNumber = `${countryCode}${secondDigit} ${firstBlock}${secondBlock}`;
+
+    return `+49 ${phoneNumber}`;
+}
+
+const getPhoneNumber = (country = 'FR') => {
+  switch (country) {
+    case 'FR':
+      return generateFrenchPhoneNumber();
+    case 'GB':
+      return generateUKPhoneNumber();
+    case 'DE':
+      return generateGermanPhoneNumber();
+    default:
+      break;
+  }
+}
 
   function generateUKPhoneNumber() {
     const countryCode = "+44";
@@ -140,10 +182,10 @@ type ValidateUniqueBody = {
       });
   }
 
-export const getUniqueSiren = async () => {
+export const getUniqueSiren = async (country = 'FR') => {
   let uniqueSiren;
   while (!uniqueSiren) {
-    const siren = generateRandomSIREN();
+    const siren = generateRandomCompanyId(country);
     const result = await postValidateSiren(siren)
     if (result.status === 200) {
       uniqueSiren = siren;
@@ -152,11 +194,11 @@ export const getUniqueSiren = async () => {
   return uniqueSiren;
 }
 
-export const getUniquePhoneNumber = async (isUk = false) => {
+export const getUniquePhoneNumber = async (country = 'FR') => {
     let uniqueNumber;
   
     while (!uniqueNumber) {
-      const phoneNumber = isUk ? generateUKPhoneNumber() : generateFrenchPhoneNumber();
+      const phoneNumber = getPhoneNumber(country);
       const result = await postValidateUnique({ phone: phoneNumber })
       if (result.status === 200) {
         uniqueNumber = phoneNumber;
@@ -175,6 +217,34 @@ export const getUniqueEmail = async () => {
         }
     }
     return uniqueEmail;
+}
+
+export const initialStateDE = {
+  "preferred_language": "de",
+  "device_source": "web-next",
+  "is_multi_step": true,
+  "universe": "cleaning",
+  "mobile": "+49 1512 3564768",
+  "country_code": "DE",
+  "salutation": "M.",
+  "first_name": "kookok",
+  "last_name": "koookok",
+  "email": "kokdozkdze@gmail.com",  
+  "password": "Azerty1!",
+  "address": "Mariengartengasse 5, 50667 Köln, Deutschland",
+  "street_name": "Mariengartengasse",
+  "street_number": "5",
+  "city": "Köln",
+  "zip_code": "50667",
+  "lat": 50.9411,
+  "lng": 6.95339,
+  "date_of_birth": "10/01/1993",
+  "company_status": "freiberufler",
+  "siren": "",
+  "residency_status": "national",
+  "weekly_hours": "twenty_to_thirty",
+  "declarative_source": "sponsorship",
+  "is_revenue_simulator": true
 }
 
 export const initialStateUK = {

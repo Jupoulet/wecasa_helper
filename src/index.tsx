@@ -1,8 +1,15 @@
 import { Hono } from 'hono';
-import { Form, FormUK } from './form';
-import { getUniqueEmail, getUniquePhoneNumber, getUniqueSiren, initialStateFR, postAccount, initialStateUK } from './utils';
+import { Form, FormUK, FormDE } from './form';
+import { getUniqueEmail, getUniquePhoneNumber, getUniqueSiren, initialStateFR, postAccount, initialStateUK, initialStateDE } from './utils';
 
 const app = new Hono()
+
+export type Country = 'FR' | 'DE' | 'GB';
+const initialStateByCountry: Record<Country, any> = {
+  FR: initialStateFR,
+  GB: initialStateUK,
+  DE: initialStateDE,
+}
 
 app.get('/', async (c) => {
   const email = await getUniqueEmail();
@@ -15,15 +22,14 @@ app.get('/', async (c) => {
 .post('/', async (c) => {
   const bodyForm = await c.req.parseBody();
   const nova_status = bodyForm.company_status !== 'no_entity' ? 'yes' : '';
-  const siren = bodyForm.company_status !== 'no_entity' ? await getUniqueSiren() : '';
-  console.log('context', c.req.header().referer)
-  const country = c.req.header().referer.split('/').find((code) => code === 'uk');
-  const initialState =  country === 'uk' ? initialStateUK : initialStateFR
+  const country = (c.req.header().referer.split('/').reverse()[0].toUpperCase() || 'FR') as Country;
+  const siren = bodyForm.company_status !== 'no_entity' ? await getUniqueSiren(country) : '';
+  const initialState =  initialStateByCountry[country]
   const result = await postAccount({
     ...initialState,
     ...bodyForm,
     nova_status,
-    siren: country === 'uk' ? '' : siren,
+    siren,
   });
 
   const parsedResponse = await result.json();
@@ -31,12 +37,21 @@ app.get('/', async (c) => {
   return c.json(parsedResponse);
 })
 
-app.get('/uk', async (c) => {
+app.get('/gb', async (c) => {
   const email = await getUniqueEmail();
-  const mobile = await getUniquePhoneNumber(true);
+  const mobile = await getUniquePhoneNumber('GB');
 
   return c.html(
     <FormUK  {...initialStateUK} email={email} mobile={mobile} />
+  )
+})
+
+app.get('/de', async (c) => {
+  const email = await getUniqueEmail();
+  const mobile = await getUniquePhoneNumber('DE');
+
+  return c.html(
+    <FormDE  {...initialStateDE} email={email} mobile={mobile} />
   )
 })
 
