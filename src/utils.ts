@@ -135,6 +135,18 @@ function generateAustrianPhoneNumber() {
   return `${countryCode} ${phoneNumber}`;
 }
 
+function generateSwissPhoneNumber() {
+  const countryCode = "+41"; // Switzerland country code
+  const providerCode = Math.random() < 0.5 ? "76" : "79"; // Common Swiss mobile prefixes
+  const firstBlock = Math.floor(Math.random() * 1000).toString().padStart(3, '0'); // Three-digit number
+  const secondBlock = Math.floor(Math.random() * 10000).toString().padStart(4, '0'); // Four-digit number
+
+  // Format the phone number
+  const phoneNumber = `${providerCode} ${firstBlock} ${secondBlock}`;
+
+  return `${countryCode} ${phoneNumber}`;
+}
+
 const getPhoneNumber = (country = 'FR') => {
   switch (country) {
     case 'FR':
@@ -145,6 +157,8 @@ const getPhoneNumber = (country = 'FR') => {
       return generateGermanPhoneNumber();
     case 'AT':
       return generateAustrianPhoneNumber();
+    case 'CH': 
+      return generateSwissPhoneNumber();
     default:
       break;
   }
@@ -345,6 +359,34 @@ export const initialStateFR = {
     "siren": "",
     "nova_status": "",
   };
+
+export const initialStateCH = {
+  "preferred_language": "fr-CH",
+  "device_source": "web-next",
+  "is_multi_step": true,
+  "universe": "cleaning",
+  "mobile": "+41 78 123 45 67",
+  "country_code": "CH",
+  "salutation": "M.",
+  "first_name": "Roger",
+  "last_name": "Federer",
+  "email": "roger@gmail.com",
+  "password": "Azerty1!",
+  "address": "Schänzlistrasse 57, 3013 Bern, Schweiz",
+  "street_name": "Schänzlistrasse",
+  "street_number": "57",
+  "city": "Bern",
+  "zip_code": "3013",
+  "lat": 46.9531,
+  "lng": 7.45118,
+  "date_of_birth": "10/01/1993",
+  "company_status": "raison_individuelle",
+  "siren": "",
+  "residency_status": "national",
+  "weekly_hours": "twenty_to_thirty",
+  "declarative_source": "google",
+  "is_revenue_simulator": true
+}
 
 export const postAccount = async (body: typeof initialStateFR | typeof initialStateUK) => {
     return fetch('https://staging.wecasa.fr/api/v1/pro/account', {

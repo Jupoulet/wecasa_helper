@@ -1,5 +1,5 @@
 import type { FC } from 'hono/jsx';
-import { COMPANY_STATUS, GB_RESIDENCE_STATUS, UNIVERSES, WILL_WORK_AS_SELF_EMPLOYED, initialState, initialStateAT, initialStateDE, initialStateUK } from './utils';
+import { COMPANY_STATUS, GB_RESIDENCE_STATUS, UNIVERSES, WILL_WORK_AS_SELF_EMPLOYED, initialStateFR, initialStateCH, initialStateAT, initialStateDE, initialStateUK } from './utils';
 import { css, Style } from 'hono/css'
 import { Layout } from './layout';
 
@@ -77,7 +77,7 @@ const Input = ({ name, id, value, label, placeholder }: InputProps) => {
 }
 
 
-type FormProps = typeof initialState;
+type FormProps = typeof initialStateFR;
 
 export const Form: FC<FormProps> = ({ email, mobile, first_name, last_name, country_code, salutation, company_status, universe, ...rest }) => {
     return (
@@ -86,6 +86,9 @@ export const Form: FC<FormProps> = ({ email, mobile, first_name, last_name, coun
             <div class="items-baseline flex flex-col gap-1">
                 <button>
                     <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/gb">🇬🇧 UK form</a>
+                </button>
+                <button>
+                    <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/ch">🇨🇭 CH form</a>
                 </button>
                 <button>
                     <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/at">🇦🇹 AT form</a>
@@ -117,7 +120,7 @@ export const Form: FC<FormProps> = ({ email, mobile, first_name, last_name, coun
                     <option value='GB' selected={country_code === 'GB'}>GB</option>
                     <option value='DE' selected={country_code === 'DE'}>DE</option>
                     <option value='AT' selected={country_code === 'AT'}>AT</option>
-
+                    <option value='CH' selected={country_code === 'CH'}>CH</option>
                 </Select>
                 <Select name='company_status' label='Company status' id='company_status'>
                     {COMPANY_STATUS.map((status) => (
@@ -138,6 +141,9 @@ export const FormUK: FC<FormUKProps> = ({ email, mobile, first_name, last_name, 
             <div class="items-baseline flex flex-col gap-1">
                 <button>
                     <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/">🇫🇷 FR form</a>
+                </button>
+                <button>
+                    <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/ch">🇨🇭 CH form</a>
                 </button>
                 <button>
                     <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/at">🇦🇹 AT form</a>
@@ -181,6 +187,9 @@ export const FormDE: FC<FormPropsDE> = ({ email, mobile, first_name, last_name, 
                     <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/gb">🇬🇧 UK form</a>
                 </button>
                 <button>
+                    <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/ch">🇨🇭 CH form</a>
+                </button>
+                <button>
                     <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/at">🇦🇹 AT form</a>
                 </button>
                 <button>
@@ -210,6 +219,7 @@ export const FormDE: FC<FormPropsDE> = ({ email, mobile, first_name, last_name, 
                     <option value='GB' selected={country_code === 'GB'}>GB</option>
                     <option value='DE' selected={country_code === 'DE'}>DE</option>
                     <option value='AT' selected={country_code === 'AT'}>AT</option>
+                    <option value='CH' selected={country_code === 'CH'}>CH</option>
                 </Select>
                 <Select name='company_status' label='Company status' id='company_status'>
                     {COMPANY_STATUS.map((status) => (
@@ -230,6 +240,9 @@ export const FormAT: FC<FormPropsAT> = ({ email, mobile, first_name, last_name, 
             <div class="items-baseline flex flex-col gap-1">
                 <button>
                     <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/gb">🇬🇧 UK form</a>
+                </button>
+                <button>
+                    <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/ch">🇨🇭 CH form</a>
                 </button>
                 <button>
                     <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/de">🇩🇪 DE form</a>
@@ -261,6 +274,7 @@ export const FormAT: FC<FormPropsAT> = ({ email, mobile, first_name, last_name, 
                     <option value='GB' selected={country_code === 'GB'}>GB</option>
                     <option value='DE' selected={country_code === 'DE'}>DE</option>
                     <option value='AT' selected={country_code === 'AT'}>AT</option>
+                    <option value='CH' selected={country_code === 'CH'}>CH</option>
                 </Select>
                 <Select name='company_status' label='Company status' id='company_status'>
                     {COMPANY_STATUS.map((status) => (
@@ -270,5 +284,60 @@ export const FormAT: FC<FormPropsAT> = ({ email, mobile, first_name, last_name, 
                 <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-min">Valider</button>
             </form>
         </Layout>
-    )
+    );
+}
+
+type FormPropsCH = typeof initialStateCH;
+export const FormCH: FC<FormPropsCH> = ({ email, mobile, first_name, last_name, country_code, salutation, company_status, universe, ...rest }) => {
+    return (
+        <Layout country='CH'>
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900 mb-8">Pro subscription</h1>
+            <div class="items-baseline flex flex-col gap-1">
+                <button>
+                    <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/gb">🇬🇧 UK form</a>
+                </button>
+                <button>
+                    <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/de">🇩🇪 DE form</a>
+                </button>
+                <button>
+                    <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/at">🇦🇹 AT form</a>
+                </button>
+                <button>
+                    <a class="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white block" href="/">🇫🇷 FR form</a>
+                </button>
+            </div>
+            <form action='/' method='post' class='flex flex-col gap-4'>
+                <div>
+                    <span class="block text-sm font-medium leading-6 text-gray-900">Gender</span>
+                    <Radio name='salutation' id='M.' value='M.' checked={salutation === 'M.'} label='Monsieur' />
+                    <Radio name='salutation' id='Mme' value='Mme' checked={salutation === 'Mme'} label='Madame' />
+                </div>
+                <Select name='universe' label='Universe' id='universe'>
+                    {UNIVERSES
+                        .filter((u) => u !== 'childcare')
+                        .map((u) => (
+                            <option selected={u === universe} key={u} value={u}>{u}</option>
+                        ))
+                    }
+                </Select>
+                <Input name='first_name' id='first_name' value={first_name} label='FirstName' />
+                <Input name='last_name' id='last_name' value={last_name} label='LastName' />
+                <Input name='email' id='email' value={email} label='Email' />
+                <Input name='mobile' id='mobile' value={mobile} label='Phone' />
+                <Select name='country_code' label='Country code' id='country_code'>
+                    <option value='FR' selected={country_code === 'FR'}>FR</option>
+                    <option value='GB' selected={country_code === 'GB'}>GB</option>
+                    <option value='DE' selected={country_code === 'DE'}>DE</option>
+                    <option value='AT' selected={country_code === 'AT'}>AT</option>
+                    <option value='CH' selected={country_code === 'CH'}>CH</option>
+                </Select>
+                <Select name='company_status' label='Company status' id='company_status'>
+                    {COMPANY_STATUS.map((status) => (
+                        <option key={status} value={status} selected={status === company_status}>{status}</option>
+                    ))}
+                </Select>
+                <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-min">Valider</button>
+            </form>
+        </Layout>
+    );
 }
