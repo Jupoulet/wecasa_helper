@@ -51,6 +51,10 @@ function generateRandomEmail() {
     return digit.toString();
   }
 
+  function insertDotEveryThreeChars(str) {
+    return str.match(/.{1,3}/g)?.join('.') || str;
+}
+
   function generateRandomCompanyId(country = 'FR') {
     switch (country) {
       case 'FR':
@@ -62,7 +66,7 @@ function generateRandomEmail() {
       case 'AT':
         return generateRandomSIREN(15)
       case 'CH':
-         return `CHE-${generateRandomSIREN(9)}`
+         return `CHE-${insertDotEveryThreeChars(generateRandomSIREN(9))}`
       default:
         return generateRandomSIREN(9)
     }
@@ -372,13 +376,13 @@ export const initialStateCH = {
   "last_name": "Federer",
   "email": "roger@gmail.com",
   "password": "Azerty1!",
-  "address": "Schänzlistrasse 57, 3013 Bern, Schweiz",
-  "street_name": "Schänzlistrasse",
-  "street_number": "57",
-  "city": "Bern",
-  "zip_code": "3013",
-  "lat": 46.9531,
-  "lng": 7.45118,
+  "address": "Boulevard de Saint-Georges 30, 1205 Genève, Suisse",
+  "street_name": "Boulevard de Saint-Georges",
+  "street_number": "30",
+  "city": "Genève",
+  "zip_code": "1205",
+  "lat": 46.2012,
+  "lng": 6.13374,
   "date_of_birth": "10/01/1993",
   "company_status": "raison_individuelle",
   "siren": "",

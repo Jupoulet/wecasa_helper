@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { Form, FormUK, FormDE, FormAT } from './form';
+import { Form, FormUK, FormDE, FormAT, FormCH } from './form';
 import { getUniqueEmail, getUniquePhoneNumber, getUniqueSiren, initialStateFR, initialStateAT, initialStateCH, postAccount, initialStateUK, initialStateDE } from './utils';
 
 const app = new Hono()
@@ -71,7 +71,7 @@ app.get('/ch', async (c) => {
   const mobile = await getUniquePhoneNumber('CH');
 
   return c.html(
-    <FormAT  {...initialStateCH} email={email} mobile={mobile} />
+    <FormCH  {...initialStateCH} email={email} mobile={mobile} />
   )
 })
 
