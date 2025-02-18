@@ -186,6 +186,20 @@ type ValidateUniqueBody = {
     phone?: string;
   }
 
+  export const signin = async (body: { email: string, password: string }) => {
+    return fetch('https://staging.wecasa.fr/api/v1/session', {
+      method: 'POST',
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+      },
+      body: JSON.stringify({ user: body })
+    }); 
+  }
+
   export const postValidateSiren = async (siren: string) => {
     return fetch('https://staging.wecasa.fr/api/v1/pro/account/validate_siren', {
         method: 'POST',

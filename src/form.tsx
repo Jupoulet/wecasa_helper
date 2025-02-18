@@ -56,7 +56,7 @@ const Select = ({ name, id, label, children }: SelectProps) => {
     );
 }
 
-const Input = ({ name, id, value, label, placeholder }: InputProps) => {
+export const Input = ({ name, id, value, label, placeholder }: InputProps) => {
     return (
         <div class="sm:col-span-4">
           <label for={id} class="block text-sm font-medium leading-6 text-gray-900">{label}</label>
@@ -178,7 +178,7 @@ export const FormUK: FC<FormUKProps> = ({ email, mobile, first_name, last_name, 
 
 
 type FormPropsDE = typeof initialStateDE;
-export const FormDE: FC<FormPropsDE> = ({ email, mobile, first_name, last_name, country_code, salutation, company_status, universe, ...rest }) => {
+export const FormDE: FC<FormPropsDE> = ({ password, email, mobile, first_name, last_name, country_code, salutation, company_status, universe, ...rest }) => {
     return (
         <Layout country='DE'>
             <h1 class="text-3xl font-bold tracking-tight text-gray-900 mb-8">Pro subscription</h1>
@@ -214,6 +214,7 @@ export const FormDE: FC<FormPropsDE> = ({ email, mobile, first_name, last_name, 
                 <Input name='last_name' id='last_name' value={last_name} label='LastName' />
                 <Input name='email' id='email' value={email} label='Email' />
                 <Input name='mobile' id='mobile' value={mobile} label='Phone' />
+                <Input name='password' id='password' value={password} label='Password' />
                 <Select name='country_code' label='Country code' id='country_code'>
                     <option value='FR' selected={country_code === 'FR'}>FR</option>
                     <option value='GB' selected={country_code === 'GB'}>GB</option>
