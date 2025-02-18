@@ -2,8 +2,9 @@ import { Hono } from 'hono';
 import { sign, verify } from 'hono/jwt';
 import { setCookie, getCookie } from 'hono/cookie'
 import { Form, FormUK, FormDE, FormAT, FormCH } from './form';
-import { getUniqueEmail, getUniquePhoneNumber, getUniqueSiren, initialStateFR, initialStateAT, initialStateCH, postAccount, initialStateUK, initialStateDE, signin } from './utils';
+import { getUniqueEmail, getUniquePhoneNumber, getUniqueSiren, initialStateFR, initialStateAT, initialStateCH, postAccount, initialStateUK, initialStateDE, signin, closeAccount } from './utils';
 import { Login } from './login';
+import { CloseForm } from './close-form';
 
 const app = new Hono()
 
@@ -87,7 +88,6 @@ app.use('/protected/*', async (c, next) => {
 
   try {
     const user = await verify(token, 'SECRET_KEY')
-    console.log('USER middleware', user);
     c.set('user', user) // Attache l'utilisateur au contexte
     await next()
   } catch (err) {
@@ -95,32 +95,31 @@ app.use('/protected/*', async (c, next) => {
   }
 })
 
-app.get('/protected/user', async (c) => {
+app.get('/protected/close', async (c) => {
   const user = c.get('user');
-  console.log('USER', user.user);
-  return c.text(`${user.user} is logged in`)
+  return c.html(
+    <CloseForm user={user} />
+  );
+})
+.post('/protected/close', async (c) => {
+  const body = await c.req.parseBody();
+  const user = c.get('user');
+  const result = await closeAccount(body, user.authToken);
+  if (result.status === 200) {
+    return c.redirect('/');
+  }
+  return c.text('Nope');
 })
 
 app.get('/login', async (c) => {
-  const token = getCookie(c, 'auth_token')
-  if (!token) {
-    return c.html(
-      <Login />
-    )
-  }
-  const user = await verify(token, 'SECRET_KEY');
-  if (!user) {
-    return c.html(<Login />);
-  }
-  return c.redirect('/');
+  return c.html(
+    <Login />
+  )
 })
 .post('/login', async (c) => {
   const { email, password } = await c.req.parseBody();
   if (typeof email !== 'string' || typeof password !== 'string') return;
 
-
-
-  console.log('Email and password', { email, password });
   const result = await signin({ email, password });
   if (result.status === 200) {
     const authToken = result.headers.get('authorization');
@@ -132,10 +131,9 @@ app.get('/login', async (c) => {
       'SECRET_KEY',
     );
     setCookie(c, 'auth_token', token)
-    return c.redirect('/')
+    return c.text(authToken as string);
   }
-  console.log('Result', result);
-  console.log(result.headers.get('authorization'));
+
   const parsedResponse = await result.json();
   return c.json(parsedResponse);
 })

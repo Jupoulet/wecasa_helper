@@ -200,6 +200,21 @@ type ValidateUniqueBody = {
     }); 
   }
 
+  export const closeAccount = async (body, authToken) => {
+    return fetch('https://staging.wecasa.fr/api/v1/pro/account', {
+      method: 'DELETE',
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Authorization": authToken, 
+      },
+      body: JSON.stringify(body)
+    });
+  }
+
   export const postValidateSiren = async (siren: string) => {
     return fetch('https://staging.wecasa.fr/api/v1/pro/account/validate_siren', {
         method: 'POST',

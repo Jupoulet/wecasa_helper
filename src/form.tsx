@@ -39,7 +39,7 @@ const Radio = ({ id, name, label, value, checked }: RadioProps) => {
     )
 }
 
-const Select = ({ name, id, label, children }: SelectProps) => {
+export const Select = ({ name, id, label, children }: SelectProps) => {
     return (
         <div class="sm:col-span-4">
           <label for={id} class="block text-sm font-medium leading-6 text-gray-900">{label}</label>
