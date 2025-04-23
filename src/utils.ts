@@ -1,5 +1,5 @@
 export const UNIVERSES = ['cleaning', 'beauty', 'massage', 'haircut', 'childcare', 'sports_coaching'];
-export const COMPANY_STATUS = ['no_company', 'auto_entrepreneur', 'other_entity', 'freiberufler', 'gewerbe', 'eingetragener_kaufmann_ek', 'raison_individuelle', 'societe_en_commandite', 'societe_en_nom_collectif', 'sarl', 'sa', 'e_startup', 'sole_proprietorship', 'partnership', 'corporation']
+export const COMPANY_STATUS = ['no_company', 'auto_entrepreneur', 'other_entity']
 export const WILL_WORK_AS_SELF_EMPLOYED = ['yes', 'no', 'dont_know'];
 export const GB_RESIDENCE_STATUS = [
   'asylum-seeker',
