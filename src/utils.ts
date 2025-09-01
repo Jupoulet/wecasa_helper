@@ -187,7 +187,7 @@ type ValidateUniqueBody = {
   }
 
   export const signin = async (body: { email: string, password: string }) => {
-    return fetch('https://staging.wecasa.fr/api/v1/session', {
+    return fetch('https://aws-stage.wecasa.fr/api/v1/session', {
       method: 'POST',
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -201,7 +201,7 @@ type ValidateUniqueBody = {
   }
 
   export const closeAccount = async (body, authToken) => {
-    return fetch('https://staging.wecasa.fr/api/v1/pro/account', {
+    return fetch('https://aws-stage.wecasa.fr/api/v1/pro/account', {
       method: 'DELETE',
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -216,7 +216,7 @@ type ValidateUniqueBody = {
   }
 
   export const postValidateSiren = async (siren: string) => {
-    return fetch('https://staging.wecasa.fr/api/v1/pro/account/validate_siren', {
+    return fetch('https://aws-stage.wecasa.fr/api/v1/pro/account/validate_siren', {
         method: 'POST',
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -230,7 +230,7 @@ type ValidateUniqueBody = {
   }
   
   export const postValidateUnique = async ({ email, phone }: ValidateUniqueBody) => {
-    return fetch('https://staging.wecasa.fr/api/v1/pro/account/validate_unique', {
+    return fetch('https://aws-stage.wecasa.fr/api/v1/pro/account/validate_unique', {
         method: 'POST',
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -422,7 +422,7 @@ export const initialStateCH = {
 }
 
 export const postAccount = async (body: typeof initialStateFR | typeof initialStateUK) => {
-    return fetch('https://staging.wecasa.fr/api/v1/pro/account', {
+    return fetch('https://aws-stage.wecasa.fr/api/v1/pro/account', {
         method: 'POST',
         mode: "cors", // no-cors, *cors, same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
